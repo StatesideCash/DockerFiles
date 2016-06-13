@@ -1,0 +1,32 @@
+FROM ubuntu:latest
+
+USER root
+RUN apt-get update && apt-get upgrade -y
+
+ENV HOME /root
+
+# Use this dir for all compilation
+RUN mkdir /opt/code/
+
+RUN apt-get update
+
+# general purpose packages
+RUN apt-get install -y \
+  curl \
+  wget \
+  gcc \
+  g++ \
+  build-essential \
+  gdb \
+  make \
+  git
+
+# latest radare2 version
+# TODO valabind python bindings
+RUN git clone https://github.com/radare/radare2.git && \
+  cd radare2 && \
+  ./sys/install.sh && \
+# TODO Add a non-root user
+
+# Clean up APT when done.
+  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /opt/code/
